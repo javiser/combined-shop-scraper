@@ -1,0 +1,48 @@
+{
+  "CPU": {
+    "alarm_price": 260,
+    "quantity": 1,
+    "urls": [
+    "https://www.notebooksbilliger.de/amd+ryzen+5+5600x+cpu+tray+742451",
+    "https://www.notebooksbilliger.de/amd+ryzen+5+5600x+cpu+684022",
+    "https://www.cyberport.de?DEEP=2001-71P",
+    "https://www.cyberport.de?DEEP=2001-728",
+    "https://www.future-x.de/amd-ryzen-5-5600x-460ghz-6-core-skt-am4-35mb-65w-tray-p-8729894/",
+    "https://www.future-x.de/amd-ryzen-5-5600x-cpu-prozessor-460ghz-6-core-sockel-am4-35mb-65w-pib-p-8710906/",
+    "https://www.future-x.de/amd-ryzen-5-5600x-37-ghz-6-kerne-12-threads-32-mb-cache-speicher-socket-am4-p-8777873/"]
+  },
+  "Mainboard": {
+    "alarm_price": 140,
+    "urls": [
+    "https://www.notebooksbilliger.de/gigabyte+b550i+aorus+pro+ax+mainboard+sockel+am4+668326",
+    "https://www.cyberport.de?DEEP=2305-8HG"]
+  },
+  "RAM": {
+    "alarm_price": 50,
+    "quantity": 2,
+    "urls": [
+    "https://www.notebooksbilliger.de/crucial+16gb+ddr4+3200+cl22+683186",
+    "https://www.notebooksbilliger.de/gskill+ripjaws+16gb+kit+ddr4+3200+cl22+738230",
+    "https://www.notebooksbilliger.de/kingston+valueram+16gb+ddr4+3200+cl22+744891",
+    "https://www.cyberport.de?DEEP=2411-250",
+    "https://www.cyberport.de?DEEP=2410-1FX",
+    "https://www.cyberport.de?DEEP=2410-1F1"]
+  },
+  "SSD": {
+    "alarm_price": 60,
+    "urls": [
+    "https://www.notebooksbilliger.de/samsung+980+ssd+1tb+m2+2280+pcie+30+x4+nvme",
+    "https://www.cyberport.de?DEEP=3306-06E"]
+  },
+  "Power Suppy": {
+    "alarm_price": 80,
+    "urls": [
+    "https://www.notebooksbilliger.de/seasonic+focus+sgx+gold+500w+pc+netzteil+650457",
+    "https://www.cyberport.de?DEEP=2B05-0A5"]
+  },
+  "CPU-Cooler": {
+    "urls": [
+    "https://www.notebooksbilliger.de/scythe+fuma+2+cpu+khler+545583",
+    "https://www.cyberport.de?DEEP=2218-14X"]
+  }  
+}
