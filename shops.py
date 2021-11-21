@@ -7,9 +7,9 @@ from typing import List
 
 @dataclass
 class Product:
-    name: str
-    price: float
-    shop: str
+    name: str = ""
+    price: float = 0
+    shop: str = ""
 
     def __str__(self):
         return f"{self.name}: {self.price:.2f}€ (@{self.shop})"
