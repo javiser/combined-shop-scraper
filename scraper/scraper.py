@@ -1,6 +1,8 @@
+import argparse
 import coloredlogs
 import json
 import logging
+import sys
 from typing import List
 import shops
 
@@ -100,11 +102,26 @@ if __name__ == "__main__":
           for different "shops"
         * Each "order" for a "shop" will have a "shipping price"
         * The sum of all "orders" with their "shipping prices" will be the "total price"
-    """    
+    """
     coloredlogs.install(level="INFO", fmt="[%(levelname)s] - %(message)s")
+    parser = argparse.ArgumentParser(
+        description="Calculate best product-shop combination for a certain list of components defined in a JSON input file"
+    )
+    parser.add_argument(
+        "input_file", nargs="?", default="components.json", help="JSON input file"
+    )
+    input_args = parser.parse_args()
 
-    with open("components.json") as file:
-        components_database = json.load(file)
+    input_file = input_args.input_file
+    try:
+        with open(input_file) as file:
+            components_database = json.load(file)
+    except FileNotFoundError:
+        logging.error(f"Could not open input file {input_file}, aborting")
+        sys.exit(1)
+    except json.decoder.JSONDecodeError:
+        logging.error(f"Could not parse input file {input_file}, aborting")
+        sys.exit(1)
 
     DB = process_urls(components_database)
     cheapest_product_combination = get_cheapest_product_combination(DB, 0)
