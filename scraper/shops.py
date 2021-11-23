@@ -25,7 +25,7 @@ class Shop(ABC):
     @classmethod
     def _get_shops_dict(self) -> dict:
         return {
-            "notebooksbilliger": NBShop(),
+            "notebooksbilliger": NotebooksBilligerShop(),
             "cyberport": CyberPortShop(),
             "future-x": FutureXShop(),
         }
@@ -70,7 +70,7 @@ class Shop(ABC):
         """This method is shop-specific and returns the shipping cost based on the total order amount for that shop"""
 
 
-class NBShop(Shop):
+class NotebooksBilligerShop(Shop):
     def _process_soup(self):
         self.name = (
             self.soup.find("title").get_text().replace(" bei notebooksbilliger.de", "")
