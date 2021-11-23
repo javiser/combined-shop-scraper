@@ -39,8 +39,10 @@ class Shop(ABC):
     @classmethod
     def get_product_from_url(self, url: str) -> Product:
         shops_dict = self._get_shops_dict()
-        shop_name = next((shop for shop in shops_dict if shop in url))
-        if not shop_name:
+        try:
+            shop_name = next((shop for shop in shops_dict if shop in url))
+        except StopIteration:
+            # Shop not found
             return None
         shop = shops_dict[shop_name]
         return shop.scrape_product(url)
@@ -52,7 +54,11 @@ class Shop(ABC):
 
         website = requests.get(url, headers=headers)
         self.soup = BeautifulSoup(website.content, "html.parser")
-        self._process_soup()
+        try:
+            self._process_soup()
+        except requests.exceptions.InvalidURL:
+            self.price = None
+            self.name = None
 
         return Product(price=self.price, name=self.name, shop=str(self))
 
@@ -77,11 +83,12 @@ class NotebooksBilligerShop(Shop):
         self.name = (
             self.soup.find("title").get_text().replace(" bei notebooksbilliger.de", "")
         )
-
         product_price_container = self.soup.find_all(
             lambda tag: tag.name == "div"
             and tag.get("class") == ["product-price__container"]
         )
+        if not product_price_container:
+            raise requests.exceptions.InvalidURL
         price_part = product_price_container[0].find_all(
             "span", class_="product-price__regular js-product-price"
         )
@@ -98,6 +105,8 @@ class CyberPortShop(Shop):
     def _process_soup(self):
         self.name = self.soup.find("title").get_text().replace(" ++ Cyberport", "")
         product_price_container = self.soup.find_all("span", class_="online-price")
+        if not product_price_container:
+            raise requests.exceptions.InvalidURL
         self.price = float(
             product_price_container[0].get_text().split()[1].replace(",", ".")
         )
@@ -112,11 +121,11 @@ class CyberPortShop(Shop):
 class FutureXShop(Shop):
     def _process_soup(self):
         self.name = self.soup.find("title").get_text()
+        product_price_container = self.soup.find("span", class_="price")
+        if not product_price_container:
+            raise requests.exceptions.InvalidURL
         self.price = float(
-            self.soup.find("span", class_="price")
-            .get_text()
-            .split()[0]
-            .replace(",", ".")
+            product_price_container.get_text().split()[0].replace(",", ".")
         )
 
     def get_shipping_cost(self, total_order: float) -> float:
@@ -126,9 +135,11 @@ class FutureXShop(Shop):
 class BikeComponentsShop(Shop):
     def _process_soup(self):
         self.name = self.soup.find("title").get_text().replace(" - bike-components", "")
+        product_price_container = self.soup.find("div", class_="stock-price")
+        if not product_price_container:
+            raise requests.exceptions.InvalidURL
         self.price = float(
-            self.soup.find("div", class_="stock-price")
-            .get_text()
+            product_price_container.get_text()
             .split()[0]
             .replace(",", ".")
             .replace("€", "")
@@ -146,11 +157,13 @@ class BikeDiscountShop(Shop):
             .replace(" kaufen | Bike-Discount", "")
             .splitlines()[0]
         )
+        product_price_container = self.soup.find(
+            "span", class_="price--content content--default"
+        )
+        if not product_price_container:
+            raise requests.exceptions.InvalidURL
         self.price = float(
-            self.soup.find("span", class_="price--content content--default")
-            .get_text()
-            .split()[1]
-            .replace(",", ".")
+            product_price_container.get_text().split()[1].replace(",", ".")
         )
 
     def get_shipping_cost(self, total_order: float) -> float:
