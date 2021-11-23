@@ -28,6 +28,8 @@ class Shop(ABC):
             "notebooksbilliger": NotebooksBilligerShop(),
             "cyberport": CyberPortShop(),
             "future-x": FutureXShop(),
+            "bike-components": BikeComponentsShop(),
+            "bike-discount": BikeDiscountShop(),
         }
 
     @classmethod
@@ -119,3 +121,40 @@ class FutureXShop(Shop):
 
     def get_shipping_cost(self, total_order: float) -> float:
         return 0
+
+
+class BikeComponentsShop(Shop):
+    def _process_soup(self):
+        self.name = self.soup.find("title").get_text().replace(" - bike-components", "")
+        self.price = float(
+            self.soup.find("div", class_="stock-price")
+            .get_text()
+            .split()[0]
+            .replace(",", ".")
+            .replace("€", "")
+        )
+
+    def get_shipping_cost(self, total_order: float) -> float:
+        return 3.95
+
+
+class BikeDiscountShop(Shop):
+    def _process_soup(self):
+        self.name = (
+            self.soup.find("title")
+            .get_text()
+            .replace(" kaufen | Bike-Discount", "")
+            .splitlines()[0]
+        )
+        self.price = float(
+            self.soup.find("span", class_="price--content content--default")
+            .get_text()
+            .split()[1]
+            .replace(",", ".")
+        )
+
+    def get_shipping_cost(self, total_order: float) -> float:
+        if total_order < 99:
+            return 3.99
+        else:
+            return 0
