@@ -5,11 +5,11 @@ A simple, configurable and expandable combined shop scraper to minimize the cost
 - Find the cheapest order combination including the shipping prices
 - Get alarm prices when single components are below a defined price
 - Easily expand for new shops (scraping basic know-how required). Default basic support for:
--- PC component shops: [notebooksbilliger](https://www.notebooksbilliger.de/), [cyberport](https://www.cyberport.de/) and [future-x](https://www.future-x.de/)
--- Bike shops: [bike-components](https://www.bike-components.de) and [bike-discount](https://www.bike-discount.de)
+  - PC component shops: [notebooksbilliger](https://www.notebooksbilliger.de/), [cyberport](https://www.cyberport.de/) and [future-x](https://www.future-x.de/)
+  - Bike shops: [bike-components](https://www.bike-components.de) and [bike-discount](https://www.bike-discount.de)
 ## Usage
 ### JSON file definition
-The default name of the input JSON file is [`components.json`](scraper/components.json) and must be located in the same folder as [`scraper.py`](scraper/scraper.py). This is the basic structure of the file:
+The default name of the input JSON file is [`components.json`](scraper/components.json) (which can be also passed as optional positional argument) and must be located in the same folder as [`scraper.py`](scraper/scraper.py). This is the basic structure of the file:
 ```json
 {
   "component1": {
@@ -29,7 +29,12 @@ The default name of the input JSON file is [`components.json`](scraper/component
 ```
 The component name and at least one url are mandatory. It is possible to add several urls from the same shop for the same component if there are some alternatives for this. The quantity of each component defaults to 1, the alarm price is optional.
 ### Execution
-Just call the script [`scraper.py`](scraper/scraper.py) from within the folder, so the [`components.json`](scraper/components.json) file can be found. It will print an overview of the ideal order to minimize the overall cost. The program runs just once and does not keep tracking prices in the background. As usual with scraping, be gentle and fair and don't abuse this program. 
+Just call the script [`scraper.py`](scraper/scraper.py) from within the folder, so the [`components.json`](scraper/components.json) file can be found. You can also pass the input file as parameter, like this:
+```sh
+python3 scraper.py input_file.json
+```
+
+It will print an overview of the ideal order to minimize the overall cost. The program runs just once and does not keep tracking prices in the background. As usual with scraping, be gentle and fair and don't abuse this program. 
 ### Addition of new shops
 If you want to add a new shop, you need to edit the file [`shops.py`](scraper/shops.py) and:
 - Enter the significant part of the shop url in the method `Shop._get_shops_dict` and define a new class type (child of `Shop`)
