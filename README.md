@@ -4,7 +4,9 @@ A simple, configurable and expandable combined shop scraper to minimize the cost
 - Define an input file components.json with components to be scraped and the source urls
 - Find the cheapest order combination including the shipping prices
 - Get alarm prices when single components are below a defined price
-- Easily expand for new shops (scraping basic know-how required). Default basic support for [notebooksbilliger](https://www.notebooksbilliger.de/), [cyberport](https://www.cyberport.de/) and [future-x](https://www.future-x.de/)
+- Easily expand for new shops (scraping basic know-how required). Default basic support for:
+-- PC component shops: [notebooksbilliger](https://www.notebooksbilliger.de/), [cyberport](https://www.cyberport.de/) and [future-x](https://www.future-x.de/)
+-- Bike shops: [bike-components](https://www.bike-components.de) and [bike-discount](https://www.bike-discount.de)
 ## Usage
 ### JSON file definition
 The default name of the input JSON file is [`components.json`](scraper/components.json) and must be located in the same folder as [`scraper.py`](scraper/scraper.py). This is the basic structure of the file:
