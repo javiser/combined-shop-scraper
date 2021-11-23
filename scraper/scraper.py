@@ -55,25 +55,54 @@ def process_urls(url_DB: dict) -> dict:
     for component in url_DB:
         logging.info(f"* {component}:")
         url_DB[component]["shops"] = {}
+
+        if "urls" not in url_DB[component]:
+            logging.error(f"No urls defined for component {component}, skipping this")
+            continue
+
+        alarm_price = None
+        try:
+            if "alarm_price" in url_DB[component]:
+                alarm_price = float(url_DB[component]["alarm_price"])
+        except ValueError:
+                logging.error(
+                    f"Could not read 'alarm_price' value for component {component}, must be a number. Ignoring alarm price for this component"
+                )
+
+        quantity = 1
+        try:
+            if "quantity" in url_DB[component]:
+                quantity = int(url_DB[component]["quantity"])
+        except ValueError:
+                logging.error(
+                    f"Could not read 'quantity' value for component {component}, must be a number. Assuming quantity = 1"
+                )
+
         for url in url_DB[component]["urls"]:
             product = shops.Shop.get_product_from_url(url)
+            if not product:
+                logging.error(
+                    f"The url '{url}' points to an unsupported shop. List of supported shops:"
+                )
+                for shop in shops.Shop.get_shops_list():
+                    logging.error(f" * {shop}")
+                continue
+            if product.name is None:
+                logging.error(f"The url '{url}' seems to be invalid, ignoring it")
+                continue
             logging.debug(product)
-            if (
-                "alarm_price" in url_DB[component]
-                and product.price < url_DB[component]["alarm_price"]
-            ):
+            if alarm_price and product.price < alarm_price:
                 # This is not yet filled with real functionality
-                logging.debug(f"Alarm price for {product.name}:{product.price:.2f}€")
+                logging.debug(
+                    f"Alarm price for {product.name}:{product.price:.2f}€"
+                )
             if product.shop not in url_DB[component]["shops"]:
                 url_DB[component]["shops"][product.shop] = {}
             url_DB[component]["shops"][product.shop][product.name] = product.price
 
         # Now we create the output: a new dictionary which contains only the cheapest product of each shop and the required quantity
         output_DB[component] = {}
-        if "quantity" in url_DB[component]:
-            output_DB[component]["quantity"] = url_DB[component]["quantity"]
-        else:
-            output_DB[component]["quantity"] = 1
+        output_DB[component]["quantity"] = quantity
 
         for shop in url_DB[component]["shops"]:
             # We add shops only when a product exists for that shop
@@ -124,6 +153,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     DB = process_urls(components_database)
+    if not DB:
+        logging.error(
+            f"The file {input_file} does not contain any valuable data, aborting"
+        )
+        sys.exit(1)
     cheapest_product_combination = get_cheapest_product_combination(DB, 0)
     print(
         f"\nTotal cost: {calculate_total_price(cheapest_product_combination):.2f}€. Chosen combination:"
