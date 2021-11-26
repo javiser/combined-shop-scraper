@@ -9,7 +9,7 @@ A simple, configurable and expandable combined shop scraper to minimize the cost
   - Bike shops: [bike-components](https://www.bike-components.de) and [bike-discount](https://www.bike-discount.de)
 ## Usage
 ### JSON file definition
-The default name of the input JSON file is [`components.json`](scraper/components.json) (which can be also passed as optional positional argument) and must be located in the same folder as [`scraper.py`](scraper/scraper.py). This is the basic structure of the file:
+The default input JSON file is [`components.json`](data/components.json) (which can be also passed as optional positional argument) and must be located in the data folder. This is the basic structure of the file:
 ```json
 {
   "component1": {
