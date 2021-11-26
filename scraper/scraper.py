@@ -4,13 +4,13 @@ import json
 import logging
 import sys
 from typing import List
-import shops
+from shops import Shop, Product
 
 
-def calculate_total_price(product_list: List[shops.Product]) -> float:
+def calculate_total_price(product_list: List[Product]) -> float:
     total_price = 0
     # Contains the sum of the orders for each shop, to calculate shipping price
-    shops_dict = {shop: 0 for shop in shops.Shop.get_shops_list()}
+    shops_dict = {shop: 0 for shop in Shop.get_shops_list()}
     for product in product_list:
         if product.shop:
             shops_dict[product.shop] += product.price
@@ -19,13 +19,13 @@ def calculate_total_price(product_list: List[shops.Product]) -> float:
         shop_orders_sum = shops_dict[shop]
         if not shop_orders_sum:
             continue
-        shipping_cost = shops.Shop.calculate_shipping_price(shop, shop_orders_sum)
+        shipping_cost = Shop.calculate_shipping_price(shop, shop_orders_sum)
         total_price += shop_orders_sum + shipping_cost
 
     return total_price
 
 
-def get_cheapest_product_combination(DB: dict, comp_index: int) -> List[shops.Product]:
+def get_cheapest_product_combination(DB: dict, comp_index: int) -> List[Product]:
     component = list(DB)[comp_index]
     min_price = None
 
@@ -35,7 +35,7 @@ def get_cheapest_product_combination(DB: dict, comp_index: int) -> List[shops.Pr
         if comp_index + 1 < len(list(DB)):
             product_list = get_cheapest_product_combination(DB, comp_index + 1)
         else:
-            product_list = [shops.Product() for comp in list(DB)]
+            product_list = [Product() for comp in list(DB)]
         product_name = list(DB[component][shop])[0]
         product_price = DB[component][shop][product_name]
         product_quantity = DB[component]["quantity"]
@@ -79,12 +79,12 @@ def process_urls(url_DB: dict) -> dict:
                 )
 
         for url in url_DB[component]["urls"]:
-            product = shops.Shop.get_product_from_url(url)
+            product = Shop.get_product_from_url(url)
             if not product:
                 logging.error(
                     f"The url '{url}' points to an unsupported shop. List of supported shops:"
                 )
-                for shop in shops.Shop.get_shops_list():
+                for shop in Shop.get_shops_list():
                     logging.error(f" * {shop}")
                 continue
             if product.name is None:

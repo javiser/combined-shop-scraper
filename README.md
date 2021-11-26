@@ -28,8 +28,13 @@ The default name of the input JSON file is [`components.json`](scraper/component
   }
 ```
 The component name and at least one url are mandatory. It is possible to add several urls from the same shop for the same component if there are some alternatives for this. The quantity of each component defaults to 1, the alarm price is optional.
+### Installation
+Install the package
+```sh
+pip install -e .
+```
 ### Execution
-Just call the script [`scraper.py`](scraper/scraper.py) from within the folder, so the [`components.json`](scraper/components.json) file can be found. You can also pass the input file as parameter, like this:
+Just call the script [`scraper.py`](scraper/scraper.py). If you don't specify any input file, it will look for the [`components.json`](scraper/components.json) file inside the folder where you are executing the script. You can also pass the input file as parameter, like this:
 ```sh
 python3 scraper.py input_file.json
 ```
