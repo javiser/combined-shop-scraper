@@ -34,9 +34,9 @@ Install the package
 pip install -e .
 ```
 ### Execution
-Just call the script [`scraper.py`](scraper/scraper.py). If you don't specify any input file, it will look for the [`components.json`](scraper/components.json) file inside the folder where you are executing the script. You can also pass the input file as parameter, like this:
+Just enter the command `scraper` from the main project folder. If you don't specify any input file, it will look for the [`data/components.json`](data/components.json) file inside the folder where you are executing the script. You can also pass the input file as parameter, like this:
 ```sh
-python3 scraper.py input_file.json
+scraper your_folder/input_file.json
 ```
 
 It will print an overview of the ideal order to minimize the overall cost. The program runs just once and does not keep tracking prices in the background. As usual with scraping, be gentle and fair and don't abuse this program. 
