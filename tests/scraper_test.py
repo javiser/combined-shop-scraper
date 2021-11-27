@@ -42,6 +42,21 @@ def test_scraper_read_useless_input_file():
     path = Path("tests", "testdata", "useless_input_file.json")
     assert scraper.read_input_file(path) == False
 
+def test_scraper_unsupported_shop_input_file():
+    scraper = Scraper()
+    path = Path("tests", "testdata", "unsupported_shop_input_file.json")
+    assert scraper.read_input_file(path) == False
+
+def test_scraper_missing_urls_input_file():
+    scraper = Scraper()
+    path = Path("tests", "testdata", "missing_urls_input_file.json")
+    assert scraper.read_input_file(path) == False
+
+def test_scraper_invalid_url_input_file():
+    scraper = Scraper()
+    path = Path("tests", "testdata", "invalid_url_input_file.json")
+    assert scraper.read_input_file(path) == False
+
 
 def test_scraper_read_quantity():
     scraper = Scraper()
