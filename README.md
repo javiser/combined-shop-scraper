@@ -46,6 +46,11 @@ If you want to add a new shop, you need to edit the file [`shops.py`](scraper/sh
 - Add your new urls to the input file!
 
 Furthermore, you can add your own implementation in the [`alarm.py`](scraper/alarm.py) file. Right now it just prints some text, but you could add here your preferred alarm method.
+### Tests
+Just call
+```
+pytest
+```
 ## License
 Copyright (c) 2021 javiser
 `combined-shop-scraper` is distributed under the terms of the MIT License.

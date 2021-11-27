@@ -1,0 +1,15 @@
+{
+  "component1": {
+    "alarm_price": 260,
+    "quantity": 1,
+    "urls": [
+      "https://www.someshop.com/component1",
+      "https://www.someshop.com/component1-alternative",
+      "https://www.anothershop.com/component1-alternative"]
+  
+  "component2": {
+    "urls": [
+      "https://www.someshop.com/component2",
+      "https://www.anothershop.com/component2",
+      "https://www.onemoreshop.com/component2"]
+  }

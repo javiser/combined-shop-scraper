@@ -136,6 +136,10 @@ class Scraper:
                     url_DB[component]["shops"][product.shop] = {}
                 url_DB[component]["shops"][product.shop][product.name] = product.price
 
+            # If no data could be retrieved, then we need to skip this component
+            if not url_DB[component]["shops"]:
+                continue
+
             # Now we create the output: a new dictionary which contains only the cheapest product of each shop and the required quantity
             output_DB[component] = {}
             output_DB[component]["quantity"] = quantity
