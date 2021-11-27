@@ -11,6 +11,10 @@ class Scraper:
         coloredlogs.install(level="INFO", fmt="[%(levelname)s] - %(message)s")
 
     def read_input_file(self, input_file) -> bool:
+        if not input_file:
+            logging.error(f"No input file specified, aborting")
+            return False
+
         try:
             with open(input_file) as file:
                 components_database = json.load(file)
