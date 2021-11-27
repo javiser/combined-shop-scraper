@@ -38,13 +38,14 @@ Just enter the command `scraper` from the main project folder. If you don't spec
 ```sh
 scraper your_folder/input_file.json
 ```
-
 It will print an overview of the ideal order to minimize the overall cost. The program runs just once and does not keep tracking prices in the background. As usual with scraping, be gentle and fair and don't abuse this program. 
-### Addition of new shops
+### Development
 If you want to add a new shop, you need to edit the file [`shops.py`](scraper/shops.py) and:
 - Enter the significant part of the shop url in the method `Shop._get_shops_dict` and define a new class type (child of `Shop`)
 - Implement the methods `_process_soup` and `get_shipping_cost` for the new class. Use the existing classes as reference for the data you need to scrap.
 - Add your new urls to the input file!
+
+Furthermore, you can add your own implementation in the [`alarm.py`](scraper/alarm.py) file. Right now it just prints some text, but you could add here your preferred alarm method.
 ## License
 Copyright (c) 2021 javiser
 `combined-shop-scraper` is distributed under the terms of the MIT License.

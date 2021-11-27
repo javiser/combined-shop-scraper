@@ -3,6 +3,7 @@ import json
 import logging
 from typing import List
 from scraper.shops import Shop, Product
+from scraper.alarm import Alarm
 
 
 class Scraper:
@@ -122,7 +123,8 @@ class Scraper:
                     continue
                 logging.debug(product)
                 if alarm_price and product.price < alarm_price:
-                    # This is not yet filled with real functionality
+                    alarm = Alarm(product, alarm_price)
+                    alarm.trigger()
                     logging.debug(
                         f"Alarm price for {product.name}:{product.price:.2f}€"
                     )
