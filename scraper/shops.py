@@ -12,7 +12,9 @@ class Product:
     shop: str = ""
 
     def __str__(self):
-        return f"{self.name}: {self.price:.2f}€ (@{self.shop})"
+        if self.name:
+            return f"{self.name}: {self.price:.2f}€ (@{self.shop})"
+        return "No valid product"
 
 
 class Shop(ABC):
