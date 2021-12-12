@@ -2,7 +2,7 @@ import coloredlogs
 import json
 import logging
 from typing import List
-from scraper.shops import Shop, Product
+from scraper.shops import Shop, Product, ProductException
 from scraper.alarm import Alarm
 
 
@@ -45,7 +45,7 @@ class Scraper:
     def _calculate_total_price(self, product_list: List[Product]) -> float:
         total_price = 0
         # Contains the sum of the orders for each shop, to calculate shipping price
-        shops_dict = {shop: 0 for shop in Shop.get_shops_list()}
+        shops_dict = {shop: 0.0 for shop in Shop.get_shops_list()}
         for product in product_list:
             if product.shop:
                 shops_dict[product.shop] += product.price
@@ -62,6 +62,7 @@ class Scraper:
     def _get_cheapest_product_combination(self, comp_index: int) -> List[Product]:
         component = list(self.DB)[comp_index]
         min_price = None
+        best_product_list = []
 
         for shop in self.DB[component]:
             if shop == "quantity":
@@ -114,16 +115,14 @@ class Scraper:
                 )
 
             for url in url_DB[component]["urls"]:
-                product = Shop.get_product_from_url(url)
-                if not product:
+                try:
+                    product = Shop.get_product_from_url(url)
+                except ProductException:
                     logging.error(
-                        f"The url '{url}' points to an unsupported shop. List of supported shops:"
+                        f"The url '{url}' is invalid or points to an unsupported shop. List of supported shops:"
                     )
                     for shop in Shop.get_shops_list():
                         logging.error(f" * {shop}")
-                    continue
-                if product.name is None:
-                    logging.error(f"The url '{url}' seems to be invalid, ignoring it")
                     continue
                 logging.debug(product)
                 if alarm_price and product.price < alarm_price:

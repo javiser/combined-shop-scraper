@@ -1,4 +1,3 @@
-from os import POSIX_FADV_NOREUSE
 from scraper.shops import Product
 
 
